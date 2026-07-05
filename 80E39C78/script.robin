@@ -1,0 +1,14 @@
+@@ConnectionString: ''
+@@Type: 'Local'
+@@DesktopType: 'local'
+@@DisplayName: 'ローカル コンピューター'
+IMPORT 'controlRepo.appmask' AS appmask
+IMPORT 'imageRepo.imgrepo' AS imgrepo
+@SENSITIVE: []
+System.RunApplication.RunApplicationAndWaitToComplete ApplicationPath: $'''ms-settings:sound''' WindowStyle: System.ProcessWindowStyle.Normal Timeout: 5 ProcessId=> AppProcessId ExitCode=> AppExitCode
+UIAutomation.GetElementDetails Element: appmask['Window \'設定\'']['Group \'サウンド ... ある場合があります。\''] AttributeName: $'''Own Text''' BringToFront: True AttributeValue=> AttributeValue
+IF Contains(AttributeValue, $'''TOSHIBA-TV が選択されました。''', False) THEN
+    UIAutomation.SelectRadioButton RadioButton: appmask['Window \'設定\'']['Radio Button \'スピーカー\'']
+ELSE
+    UIAutomation.SelectRadioButton RadioButton: appmask['Window \'設定\'']['Radio Button \'TOSHIBA-TV\'']
+END
